@@ -262,9 +262,10 @@ bash ./scripts/build.sh
 
 ## 💖 Acknowledgments & Credits
 
-- DPI evasion algorithms, polymorphic TCP urgent pointer mutation, and record desynchronization techniques are inspired by and adapted from the research in **[Alan-RIP-Dpi-Windows](https://github.com/DrAlanK/Alan-RIP-Dpi-Windows)** by **DrAlanK**.
+- DPI evasion algorithms, polymorphic TCP urgent pointer mutation, and record desynchronization techniques are inspired by and adapted from the research in **[UAC-SNI-Spoofer](https://github.com/Floxu1/UAC-SNI-Spoofer-Android)** by **Floxu1**.
 - uTLS library by **Refraction Networking**.
 - smux multiplexing by **xtaci**.
+- 
 
 ---
 
