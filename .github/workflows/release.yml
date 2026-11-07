@@ -1,0 +1,143 @@
+name: Release & Multi-Platform Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+      draft:
+        description: 'Create draft release'
+        type: boolean
+        default: false
+      prerelease:
+        description: 'Create prerelease'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    name: Build & Package Binaries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+
+      - name: Determine Version Tag
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG="v1.0.0"
+          fi
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Run Unit Tests
+        run: |
+          go test -v ./...
+
+      - name: Build Cross-Platform Binaries
+        env:
+          TAG: ${{ steps.version.outputs.TAG }}
+        run: |
+          mkdir -p dist
+          
+          build_target() {
+            local OS=$1
+            local ARCH=$2
+            local EXT=""
+            if [ "$OS" = "windows" ]; then
+              EXT=".exe"
+            fi
+            
+            echo "Building for $OS-$ARCH..."
+            local OUTDIR="saturn-${TAG}-${OS}-${ARCH}"
+            mkdir -p "$OUTDIR"
+            
+            CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH go build -trimpath -ldflags="-s -w -X main.Version=${TAG}" -o "${OUTDIR}/saturn-server${EXT}" ./cmd/saturn-server
+            CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH go build -trimpath -ldflags="-s -w -X main.Version=${TAG}" -o "${OUTDIR}/saturn-client${EXT}" ./cmd/saturn-client
+            
+            cp LICENSE "$OUTDIR/"
+            cp examples/client.json "$OUTDIR/"
+            cp examples/server.json "$OUTDIR/"
+            
+            if [ "$OS" = "windows" ]; then
+              zip -r "dist/saturn-${OS}-${ARCH}.zip" "$OUTDIR"
+            else
+              tar -czvf "dist/saturn-${OS}-${ARCH}.tar.gz" "$OUTDIR"
+            fi
+            rm -rf "$OUTDIR"
+          }
+
+          # Linux (x86_64, aarch64, armv7)
+          build_target linux amd64
+          build_target linux arm64
+          build_target linux arm
+
+          # Windows (x86_64, arm64)
+          build_target windows amd64
+          build_target windows arm64
+
+          # macOS Darwin (Intel, Apple Silicon)
+          build_target darwin amd64
+          build_target darwin arm64
+
+      - name: Generate Checksums
+        working-directory: dist
+        run: |
+          sha256sum * > sha256sums.txt
+          cat sha256sums.txt
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.TAG }}
+          name: Saturn Core ${{ steps.version.outputs.TAG }}
+          body: |
+            ## 🚀 Saturn Core Release ${{ steps.version.outputs.TAG }}
+            
+            Ultra-stealth, censorship-resistant tunnel designed to bypass Deep Packet Inspection (DPI) and protocol fingerprinting.
+            
+            ### ✨ Features
+            - **TLS 1.3 Camouflage:** Emulates genuine browser ClientHello (Chrome, Safari, Firefox).
+            - **Alan DPI Evasion Engine:** 24 battle-tested vectors including TCP `MSG_OOB` urgent-data middlebox desynchronization and SNI fragmentation.
+            - **Flow Auto-Rotation:** 1.5MB flow rotation defeats Iran ISP (MCI / Irancell) stateful burst drop & throttling.
+            - **Multiplexing:** Smux v2 with customized mobile window sizes and aggressive keep-alives.
+            - **Cross-Platform:** Native support for Windows, Linux, macOS, and Android (Termux).
+            
+            ### 📦 Binaries Included
+            - `saturn-linux-amd64.tar.gz` (Ubuntu / Debian / CentOS / Alpine x86_64)
+            - `saturn-linux-arm64.tar.gz` (Linux ARM64 / VPS / Raspberry Pi)
+            - `saturn-linux-arm.tar.gz` (Termux 32-bit / Embedded ARM)
+            - `saturn-windows-amd64.zip` (Windows 10/11 x86_64)
+            - `saturn-windows-arm64.zip` (Windows ARM64)
+            - `saturn-darwin-amd64.tar.gz` (macOS Intel)
+            - `saturn-darwin-arm64.tar.gz` (macOS Apple Silicon M1/M2/M3/M4)
+            
+            ### 🔐 SHA-256 Checksums
+            See attached `sha256sums.txt`.
+          files: |
+            dist/*
+          draft: ${{ github.event.inputs.draft || false }}
+          prerelease: ${{ github.event.inputs.prerelease || false }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

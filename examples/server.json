@@ -1,0 +1,9 @@
+{
+  "listen": "0.0.0.0:443",
+  "private_key": "<SERVER_PRIVATE_KEY_BASE64>",
+  "public_key": "<SERVER_PUBLIC_KEY_BASE64>",
+  "uuid": "d3b07384-d113-4660-8438-d6eb406e2329",
+  "short_id": "a1b2c3d4",
+  "fallback_dest": "dl.google.com:443",
+  "cipher": "chacha20-poly1305"
+}

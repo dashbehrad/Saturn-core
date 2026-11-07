@@ -1,0 +1,30 @@
+# Binaries
+bin/
+build/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/saturn-server
+/saturn-client
+
+# Test binaries and profiles
+test_*
+*.test
+*.out
+*.prof
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs & temp
+*.log
+tmp/
+scratch/

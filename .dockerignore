@@ -1,0 +1,11 @@
+.git
+.github
+bin/
+build/
+dist/
+*.exe
+*.log
+*.tar.gz
+*.zip
+tmp/
+scratch/

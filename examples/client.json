@@ -1,0 +1,16 @@
+{
+  "local_listen": "127.0.0.1:10808",
+  "connections": 2,
+  "profile": {
+    "server": "1.2.3.4",
+    "port": 443,
+    "uuid": "d3b07384-d113-4660-8438-d6eb406e2329",
+    "public_key": "YOUR_SERVER_PUBLIC_KEY_BASE64",
+    "short_id": "a1b2c3d4",
+    "sni": "dl.google.com",
+    "alpn": "h2",
+    "cipher": "chacha20-poly1305",
+    "fingerprint": "chrome",
+    "dpi_vector": "VEC-10"
+  }
+}
