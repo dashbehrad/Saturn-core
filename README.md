@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/logo.jpg" alt="Saturn Core Logo" width="220" style="border-radius: 50%; box-shadow: 0 8px 30px rgba(0,0,0,0.25);" />
+
 # 🪐 Saturn Core
 
 **The Next-Generation, Ultra-Stealth, Anti-Censorship Tunnel Engine**  
@@ -11,11 +13,44 @@
 [![License](https://img.shields.io/github/license/dashbehrad/Saturn-core?style=flat-square)](LICENSE)
 [![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Linux%20%7C%20macOS%20%7C%20Termux-brightgreen?style=flat-square)]()
 
-[English](#english) | [راهنمای فارسی](#persian)
+[⚡ One-Click Installers](#one-click-installers) | [English](#english) | [راهنمای فارسی](#persian) | [Zero-Config Engine](#zero-config)
 
 ---
 
 </div>
+
+<a name="one-click-installers"></a>
+## ⚡ One-Click Installers (نصب با یک کلیک در تمامی پلتفرم‌ها)
+
+Install and run Saturn across any operating system using a single command:
+
+| Platform / محیط | One-Line Installation Command / دستور نصب یک‌خطی |
+| :--- | :--- |
+| **🌐 Universal (Auto-Detect)** | `curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/install.sh \| bash` |
+| **🐧 Linux Server (Automated)** | `curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-server.sh \| sudo bash` |
+| **🪟 Windows (PowerShell)** | `irm https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-windows.ps1 \| iex` |
+| **📱 Android Termux** | `curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-termux.sh \| bash` |
+| **🍏 macOS (Intel & M-Series)** | `curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-mac.sh \| bash` |
+
+---
+
+<a name="zero-config"></a>
+## 🪄 Zero-Config Auto Generation (تولید خودکار کانفیگ در هر سیستم‌عامل)
+
+> **آیا با اجرای هسته روی هر سیستم‌عامل، کانفیگ به صورت خودکار تولید می‌شود؟**  
+> **بله! ۱۰۰٪ خودکار.**
+
+هسته ساتورن کاملاً **Zero-Configuration** طراحی شده است:
+1. **سرور (`saturn-server`):**
+   - به محض اجرای `saturn-server` روی ویندوز، لینوکس، مک یا ترموکس، در صورتی که فایل کانفیگ وجود نداشته باشد، هسته به صورت هوشمند و بدون نیاز به ورودی کاربر:
+     - جفت کلید رمزنگاری نامتقارن **Curve25519** را تولید می‌کند.
+     - شناسه **UUID** اختصاصی و **ShortID** ایمن می‌سازد.
+     - آی‌پی عمومی سرور را به صورت خودکار شناسایی می‌کند.
+     - فایل `config.json` را ذخیره کرده، لینک مستقیم اتصال `saturn://` را در ترمینال چاپ می‌کند و بلافاصله پورت ۴۴۳ را باز و شروع به سرویس‌دهی می‌نماید!
+2. **کلاینت (`saturn-client`):**
+   - در صورت اجرای مستقیم بدون پارامتر، فایل کانفیگ محلی `client.json` را بررسی می‌کند؛ اگر وجود نداشته باشد، به طور خودکار فایل قالب `client.json` را تولید کرده و نمونه نحوه اتصال از طریق لینک `saturn://` را نمایش می‌دهد.
+
+---
 
 <a name="english"></a>
 ## 🌟 Overview (English)
@@ -62,24 +97,23 @@ Saturn conceals traffic inside authentic **TLS 1.3 ClientHello** records using g
 
 ### 1. 🪟 Windows (ویندوز)
 
-#### Download & Run
-1. Download `saturn-windows-amd64.zip` from [Releases](https://github.com/dashbehrad/Saturn-core/releases/latest).
-2. Extract the archive into a folder (e.g., `C:\Saturn`).
-3. Run `saturn-client.exe` using either your `saturn://` URI or `client.json` configuration:
+#### One-Click Install & Desktop Shortcut (نصب با یک کلیک در ویندوز)
+دستور زیر را در PowerShell ویندوز کپی و اینتر کنید:
+```powershell
+irm https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-windows.ps1 | iex
+```
+اسکریپت به صورت خودکار آخرین نسخه کلاینت را دانلود کرده، شورتکات دسکتاپ **🪐 Saturn Client** را می‌سازد و لینک سرور شما را دریافت می‌کند. با دوبار کلیک روی آیکون دسکتاپ، پروکسی محلی روی `127.0.0.1:10808` فعال می‌شود.
 
+#### Manual Run (اجرای دستی)
 ```powershell
 # Option A: Connect using saturn:// URI
 .\saturn-client.exe -u "saturn://UUID@YOUR_SERVER_IP:443?pbk=PUBLIC_KEY&sid=SHORT_ID&sni=dl.google.com&alpn=h2&fp=chrome&cipher=chacha20-poly1305#Saturn"
 
 # Option B: Connect using client.json
 .\saturn-client.exe -c .\client.json
-
-# Option C: Direct CLI flags with specific DPI vector
-.\saturn-client.exe -server YOUR_SERVER_IP:443 -uuid YOUR_UUID -pbk YOUR_PBK -sid YOUR_SID -sni dl.google.com -dpi-vector VEC-10
 ```
 
 #### Configure System / Browser Proxy on Windows
-Saturn opens a local proxy at `127.0.0.1:10808` supporting both **SOCKS5** and **HTTP**.
 - **Windows System Proxy:** Open Windows Settings ➔ Network & Internet ➔ Proxy ➔ Set Manual Proxy Server to `127.0.0.1` and Port `10808`.
 - **Browser (Chrome/Firefox/Edge):** Use extensions like *SwitchyOmega* or *FoxyProxy* pointing to SOCKS5 `127.0.0.1:10808`.
 - **Telegram Desktop:** Settings ➔ Advanced ➔ Connection type ➔ Use custom proxy ➔ SOCKS5: `127.0.0.1:10808`.
@@ -88,72 +122,55 @@ Saturn opens a local proxy at `127.0.0.1:10808` supporting both **SOCKS5** and *
 
 ### 2. 🐧 Linux (Desktop & Server)
 
-#### Client Mode (کلاینت لینوکس)
+#### Automated Server Setup (نصب یک‌کلیکی سرور لینوکس)
 ```bash
-# Download and extract
-curl -sSL https://github.com/dashbehrad/Saturn-core/releases/latest/download/saturn-linux-amd64.tar.gz | tar -xz
-cd saturn-*
-
-# Run Saturn Client
-./saturn-client -u "saturn://UUID@SERVER_IP:443?pbk=KEY&sid=SID"
+curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-server.sh | sudo bash
 ```
 
-#### Run as a Background System Service
+#### Client Mode (کلاینت لینوکس)
 ```bash
-# Copy binary
-sudo cp saturn-client /usr/local/bin/
+# Universal install
+curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/install.sh | bash
 
-# Use the client in CLI tools
-export all_proxy="socks5://127.0.0.1:10808"
-curl -I https://www.google.com
+# Run client
+saturn-client -u "saturn://UUID@SERVER_IP:443?pbk=KEY&sid=SID"
 ```
 
 ---
 
 ### 3. 📱 Android Termux (ترموکس بدون روت)
 
-You can run Saturn Client directly inside Termux on Android without needing root permissions:
-
-#### One-Line Installation:
+اجرای آسان کلاینت ساتورن در محیط ترموکس گوشی بدون نیاز به روت با یک دستور:
 ```bash
-curl -sSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-termux.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-termux.sh | bash
 ```
-
-#### Manual Termux Setup:
+پس از نصب:
 ```bash
-# 1. Download saturn-client for ARM64
-curl -sSL https://github.com/dashbehrad/Saturn-core/releases/latest/download/saturn-linux-arm64.tar.gz | tar -xz
-cp saturn-*/saturn-client $PREFIX/bin/
-chmod +x $PREFIX/bin/saturn-client
-
-# 2. Run Saturn Client in background
+# ۱. اجرای کلاینت در پس‌زمینه
 saturn-client -u "saturn://..." &
 
-# 3. Route Termux traffic through Saturn
-export http_proxy="http://127.0.0.1:10808"
-export https_proxy="http://127.0.0.1:10808"
-export all_proxy="socks5://127.0.0.1:10808"
+# ۲. فعال‌سازی پروکسی برای کل ترمینال
+source saturn-on
 
-# 4. Now pkg, apt, git, and curl work with zero censorship!
-pkg update && pkg install git
+# ۳. تست اتصال (اکنون دستورات pkg, git و curl بدون محدودیت کار می‌کنند)
+curl -I https://www.google.com
+
+# ۴. غیرفعال‌سازی پروکسی
+source saturn-off
 ```
 
 ---
 
 ### 4. 🍏 macOS (Intel & Apple Silicon M1/M2/M3/M4)
 
+نصب خودکار کلاینت و ابزارهای سوئیچ پروکسی در مک:
 ```bash
-# Download for Apple Silicon (arm64) or Intel (amd64)
-curl -sSL https://github.com/dashbehrad/Saturn-core/releases/latest/download/saturn-darwin-arm64.tar.gz | tar -xz
-cd saturn-*
-
-# Start client
-./saturn-client -u "saturn://..."
+curl -fsSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-mac.sh | bash
 ```
-
-To route all macOS network traffic:
-- Open **System Settings** ➔ **Network** ➔ **Wi-Fi / Ethernet** ➔ **Details** ➔ **Proxies**.
-- Enable **SOCKS Proxy** and enter `127.0.0.1` port `10808`.
+پس از نصب:
+- اجرای کلاینت: `saturn-client -u "saturn://..." &`
+- فعال‌سازی خودکار پروکسی سیستمی مک: `saturn-mac-on`
+- غیرفعال‌سازی پروکسی سیستمی: `saturn-mac-off`
 
 ---
 
@@ -165,12 +182,11 @@ Pre-built multi-architecture Docker containers (`linux/amd64`, `linux/arm64`) ar
 ```bash
 docker pull ghcr.io/dashbehrad/saturn-core:latest
 
-# Run Server
+# Run Server (Zero-Config: automatically generates keys and serves)
 docker run -d \
   --name saturn-server \
   --restart always \
   --network host \
-  -v /etc/saturn/config.json:/etc/saturn/config.json:ro \
   ghcr.io/dashbehrad/saturn-core:latest
 ```
 
@@ -183,52 +199,6 @@ docker run -d \
   --entrypoint saturn-client \
   ghcr.io/dashbehrad/saturn-core:latest \
   -u "saturn://..." -l "0.0.0.0:10808"
-```
-
----
-
-## ⚡ Server Installation (نصب سرور ساتورن)
-
-Deploying a high-performance Saturn server on Ubuntu / Debian / CentOS takes less than 60 seconds.
-
-### Automated One-Line Install Script
-Run as `root` on your server:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/dashbehrad/Saturn-core/main/scripts/install-server.sh | bash
-```
-
-The script automatically:
-1. Detects your CPU architecture (`amd64` or `arm64`).
-2. Installs `saturn-server` into `/usr/local/bin/`.
-3. Enables Linux TCP BBR congestion control and network buffer tuning.
-4. Generates unique Curve25519 cryptographic key pairs, Client UUID, and Short ID.
-5. Configures and starts the `systemd` service (`saturn-server.service`).
-6. Prints your ready-to-use `saturn://` connection link.
-
-### Generate Keys Manually
-```bash
-saturn-server -keygen
-```
-Output:
-```
-Curve25519 Private Key: 8K7a...==
-Curve25519 Public Key:  m9Lx...==
-Client Auth UUID:       d3b07384-d113-4660-8438-d6eb406e2329
-Short ID:               4f8b2a1e
-```
-
-### Server Configuration File (`/etc/saturn/config.json`)
-```json
-{
-  "listen": "0.0.0.0:443",
-  "private_key": "<SERVER_PRIVATE_KEY_BASE64>",
-  "public_key": "<SERVER_PUBLIC_KEY_BASE64>",
-  "uuid": "d3b07384-d113-4660-8438-d6eb406e2329",
-  "short_id": "4f8b2a1e",
-  "fallback_dest": "dl.google.com:443",
-  "cipher": "chacha20-poly1305"
-}
 ```
 
 ---
@@ -258,7 +228,7 @@ Short ID:               4f8b2a1e
 ### Supported DPI Vectors (`-dpi-vector`)
 | Vector | Description |
 | :--- | :--- |
-| `autopilot` | Dynamic priority dispatching based on network conditions |
+| `auto` | Dynamic priority dispatching based on network conditions |
 | `VEC-01` | SNI Split at offset 1 with 2ms interleaving |
 | `VEC-05` | Reverse Fragment Order transmission |
 | `VEC-10` | Polymorphic TCP `MSG_OOB` urgent data marker + SNI split |
