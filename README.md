@@ -4,7 +4,7 @@
 
 # 🪐 Saturn Core
 
-**The Next-Generation, Ultra-Stealth, Anti-Censorship Tunnel Engine**  
+**The Next-Generation, Ultra-Stealth, Anti-Censorship Tunnel Engine**
 *Defeating Deep Packet Inspection (DPI) & Active Probing on Hostile Networks*
 
 [![Go Version](https://img.shields.io/github/go-mod/go-version/dashbehrad/Saturn-core?style=flat-square&logo=go)](https://go.dev/)
@@ -38,7 +38,7 @@ Install and run Saturn across any operating system using a single command:
 <a name="zero-config"></a>
 ## 🪄 Zero-Config Auto Generation (تولید خودکار کانفیگ در هر سیستم‌عامل)
 
-> **آیا با اجرای هسته روی هر سیستم‌عامل، کانفیگ به صورت خودکار تولید می‌شود؟**  
+> **آیا با اجرای هسته روی هر سیستم‌عامل، کانفیگ به صورت خودکار تولید می‌شود؟**
 > **بله! ۱۰۰٪ خودکار.**
 
 هسته ساتورن کاملاً **Zero-Configuration** طراحی شده است:
@@ -99,7 +99,7 @@ Saturn conceals traffic inside authentic **TLS 1.3 ClientHello** records using g
 ### 1. 🪟 Windows (ویندوز)
 
 > [!TIP]
-> **راهنمای کاربران داخل ایران:**  
+> **راهنمای کاربران داخل ایران:**
 > دامنه `raw.githubusercontent.com` در اکثر اینترنت‌های ایران فیلتر است و دستور قدیمی `irm` ممکن است با تایم‌اوت مواجه شود. برای نصب بدون مشکل، از **روش اول (CDN)** یا **روش دوم (CMD)** استفاده کنید که ۱۰۰٪ روی اپراتورهای ایران کار می‌کنند.
 
 #### روش اول: پاورشل با CDN پرسرعت ضد تحریم (پیشنهادی)
@@ -289,7 +289,7 @@ bash ./scripts/build.sh
 - DPI evasion algorithms, polymorphic TCP urgent pointer mutation, and record desynchronization techniques are inspired by and adapted from the research in **[UAC-SNI-Spoofer](https://github.com/Floxu1/UAC-SNI-Spoofer-Android)** by **Floxu1** and **[Alan-RIP-Dpi-Windows](https://github.com/DrAlanK/Alan-RIP-Dpi-Windows)** by **DrAlanK**.
 - uTLS library by **Refraction Networking**.
 - smux multiplexing by **xtaci**.
-- 
+-
 
 ---
 

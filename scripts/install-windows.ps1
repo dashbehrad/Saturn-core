@@ -50,7 +50,7 @@ foreach ($zipUrl in $downloadUrls) {
             Write-Host "[+] Download complete! Extracting..." -ForegroundColor Green
             $extractDir = "$env:TEMP\saturn_ext_$([System.IO.Path]::GetRandomFileName())"
             Expand-Archive -Path $tempZip -DestinationPath $extractDir -Force
-            
+
             $extractedExe = Get-ChildItem -Path $extractDir -Filter "saturn-client.exe" -Recurse | Select-Object -First 1
             if ($extractedExe) {
                 Copy-Item -Path $extractedExe.FullName -Destination $binPath -Force
